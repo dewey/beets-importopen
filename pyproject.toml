@@ -1,0 +1,21 @@
+[project]
+name = "beets-importopen"
+version = "0.1.0"
+description = "Adds an Open folder choice to the beets import prompt"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Philipp Defner", email = "mail@notmyhostna.me" }]
+requires-python = ">=3.10"
+dependencies = ["beets>=2.8"]
+
+[project.urls]
+Repository = "https://github.com/dewey/beets-importopen"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# beetsplug is a namespace package shared with beets and other plugins, so it
+# has no __init__.py.
+[tool.hatch.build.targets.wheel]
+packages = ["beetsplug"]
