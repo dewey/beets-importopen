@@ -5,7 +5,8 @@ Adds an **Open folder** choice (key `o`) to the beets import prompt.
 It opens the folder being imported in the file browser (`open` on macOS,
 `xdg-open` on Linux), so you can look at the files before you decide. The
 prompt is shown again afterwards. A multi-disc album opens every disc
-folder.
+folder. For a single track (track mode) it opens the folder with that file
+selected.
 
 ## Install
 

@@ -1,9 +1,11 @@
 """Beets plugin that adds "Open" to the import prompt.
 
 Opens the folder being imported in the file browser (Finder on macOS), so
-the files can be checked before deciding. The prompt is shown again after.
+the files can be checked before deciding. For a single track it opens the
+folder with that file selected. The prompt is shown again after.
 """
 
+import os
 import subprocess
 import sys
 
@@ -21,9 +23,20 @@ class ImportOpenPlugin(BeetsPlugin):
         return [PromptChoice("o", "Open folder", self.open)]
 
     def open(self, session, task):
-        opener = "open" if sys.platform == "darwin" else "xdg-open"
-        # A multi-disc album has one path per disc folder.
+        # A multi-disc album has one path per disc folder. In track mode the
+        # path is the file itself, so show its folder instead of playing it.
         for path in task.paths:
             ui.print_(f"Opening {displayable_path(path)}")
-            subprocess.run([opener, syspath(path)], check=True)
+            subprocess.run(open_command(syspath(path)), check=True)
         return None
+
+
+def open_command(path):
+    if sys.platform == "darwin":
+        if os.path.isfile(path):
+            # -R shows the file selected in its Finder folder.
+            return ["open", "-R", path]
+        return ["open", path]
+    if os.path.isfile(path):
+        path = os.path.dirname(path)
+    return ["xdg-open", path]
